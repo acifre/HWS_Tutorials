@@ -16,8 +16,18 @@ struct AddBook: View {
     @State private var genre = "Fantasy"
     @State private var review = ""
     @State private var rating = 3
+    @State private var date = Date.now
     
     let genres = ["Fantasy", "Horror", "Kids", "Mystery", "Poetry", "Romance", "Thriller"]
+    
+    var entryIsValid: Bool {
+        if title.trimmingCharacters(in: .whitespaces).isEmpty || author.trimmingCharacters(in: .whitespaces).isEmpty {
+            return false
+        } else {
+            return true
+        }
+        
+    }
     
     
     var body: some View {
@@ -31,6 +41,8 @@ struct AddBook: View {
                             Text($0)
                         }
                     }
+                    DatePicker("Date finished", selection: $date, displayedComponents: .date)
+                        .datePickerStyle(.compact)
                 }
                 
                 Section {
@@ -46,6 +58,7 @@ struct AddBook: View {
                         let newBook = Book(context: moc)
                         
                         newBook.id = UUID()
+                        newBook.date = date
                         newBook.title = title
                         newBook.author = author
                         newBook.genre = genre
@@ -58,6 +71,7 @@ struct AddBook: View {
                         
                     }
                 }
+                .disabled(!entryIsValid)
             }
             .navigationTitle("Add Book")
         }

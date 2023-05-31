@@ -33,7 +33,12 @@ struct ContentView: View {
                                 Text(book.author ?? "Unknown Author")
                                     .foregroundColor(.secondary)
                             }
+                            
                         }
+                    }
+                    .if(book.rating == 1) { view in
+                        view.listRowBackground(Color.red)
+                        
                     }
                  
                     
